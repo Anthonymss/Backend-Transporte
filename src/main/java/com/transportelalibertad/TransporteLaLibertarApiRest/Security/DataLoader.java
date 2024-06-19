@@ -42,6 +42,18 @@ public class DataLoader {
                 usuario.setContrasena(passwordEncoder.encode(usuario.getContrasena()));
                 usuarioRepository.save(usuario);
             }
+            Optional<Usuario> usuario4=usuarioRepository.findById(4L);
+            if (usuario4.isPresent()) {
+                Usuario usuario = usuario4.get();
+                usuario.setContrasena(passwordEncoder.encode(usuario.getContrasena()));
+                usuarioRepository.save(usuario);
+            }
+            Optional<Usuario> usuario5=usuarioRepository.findById(5L);
+            if (usuario5.isPresent()) {
+                Usuario usuario = usuario5.get();
+                usuario.setContrasena(passwordEncoder.encode(usuario.getContrasena()));
+                usuarioRepository.save(usuario);
+            }
         };
     }
 }
