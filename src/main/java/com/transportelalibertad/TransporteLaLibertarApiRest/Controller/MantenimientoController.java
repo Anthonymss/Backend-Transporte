@@ -191,7 +191,15 @@ public class MantenimientoController {
     public ResponseEntity<List<ReporteFallo>> getReportesFallosByEstado(@PathVariable String estado) {
         return ResponseEntity.ok(reporteFalloService.findByEstado(estado));
     }
-
+    @GetMapping("/listarReportes/{id}")
+    public ResponseEntity<?> getReportesFallosByIdTecnico(@PathVariable Long id){
+        Optional<Usuario> usuario = usuarioService.findById(id);
+        if(usuario.isPresent()){
+            return new ResponseEntity<>(reporteFalloService.findByIdTecnico(id),HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("Id de tecnico incorrecto",HttpStatus.NOT_FOUND);
+        }
+    }
     @PutMapping("/reportes-fallos/{reporteId}/estado")
     public ResponseEntity<ReporteFallo> updateReporteFalloEstado(@PathVariable Long reporteId, @RequestParam String estado) {
         ReporteFallo updatedReporte = reporteFalloService.updateEstado(reporteId, estado);

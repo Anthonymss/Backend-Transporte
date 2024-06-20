@@ -12,9 +12,9 @@ INSERT INTO rol ( nombre) VALUES( 'MANTENIMIENTO');
 INSERT INTO rol ( nombre) VALUES( 'ALMACEN');
 
 
-INSERT INTO usuario ( nombre, apellido, correo_electronico, contrasena, imagen, sucursal_id) VALUES ( 'Gian Anthony', 'Choque', 'giananthonch@gmail.com', '123', 'noasignado', 1);
-INSERT INTO usuario ( nombre, apellido, correo_electronico, contrasena, imagen, sucursal_id) VALUES ( 'Alex', 'Guzman', 'correoprueba@gmail.com', '123', 'noasignado', 1);
-INSERT INTO usuario ( nombre, apellido, correo_electronico, contrasena, imagen, sucursal_id) VALUES ( "Laura", "Salas", 'correopruebalarura@gmail.com', '123', 'noasignado', 1);
+INSERT INTO usuario ( nombre, apellido, correo_electronico, contrasena, imagen, sucursal_id) VALUES ( 'Gian Anthony', 'Choque', 'giananthonych@gmail.com', '123', 'noasignado', 1);
+INSERT INTO usuario ( nombre, apellido, correo_electronico, contrasena, imagen, sucursal_id) VALUES ( 'Alex', 'Guzman', 'correoprueba@gasmail.com', '123', 'noasignado', 1);
+INSERT INTO usuario ( nombre, apellido, correo_electronico, contrasena, imagen, sucursal_id) VALUES ( "Laura", "Salas", 'correopruebalarura@gmmaail.com', '123', 'noasignado', 1);
 INSERT INTO usuario ( nombre, apellido, correo_electronico, contrasena, imagen, sucursal_id) VALUES ( 'Maria', 'Gomez', 'maria.gomez@example.com', 'password123', 'imagen2.png', 2);
 INSERT INTO usuario ( nombre, apellido, correo_electronico, contrasena, imagen, sucursal_id) VALUES ( 'Carlos', 'Lopez', 'carlos.lopez@example.com', 'password123', 'imagen3.png', 3);
 

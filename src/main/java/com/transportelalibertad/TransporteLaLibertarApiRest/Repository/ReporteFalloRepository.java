@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface ReporteFalloRepository extends JpaRepository<ReporteFallo, Long> {
     List<ReporteFallo> findByEstado(String estado);
+    List<ReporteFallo> findByTecnicoId(Long tecnicoId);
 }

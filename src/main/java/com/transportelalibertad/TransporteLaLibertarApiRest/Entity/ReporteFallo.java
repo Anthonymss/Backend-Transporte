@@ -15,6 +15,7 @@ public class ReporteFallo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String descripcion;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechaReporte;
     private String estado; // Ej: ABIERTO, CERRADO
 
@@ -25,4 +26,10 @@ public class ReporteFallo {
     @ManyToOne
     @JoinColumn(name = "tecnico_id")
     private Usuario tecnico;
+
+    @PrePersist
+    protected void onCreate() {
+        fechaReporte= new Date();
+        estado = "Pendiente";
+    }
 }

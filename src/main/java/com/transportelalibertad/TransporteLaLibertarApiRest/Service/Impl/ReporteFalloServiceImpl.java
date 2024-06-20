@@ -35,4 +35,9 @@ public class ReporteFalloServiceImpl implements ReporteFalloService {
         reporte.setEstado(estado);
         return reporteFalloRepository.save(reporte);
     }
+
+    @Override
+    public List<ReporteFallo> findByIdTecnico(Long Id) {
+        return reporteFalloRepository.findByTecnicoId(Id);
+    }
 }

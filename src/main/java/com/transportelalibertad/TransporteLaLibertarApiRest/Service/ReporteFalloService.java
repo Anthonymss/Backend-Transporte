@@ -9,4 +9,5 @@ public interface ReporteFalloService {
     List<ReporteFallo> findAll();
     List<ReporteFallo> findByEstado(String estado);
     ReporteFallo updateEstado(Long reporteId, String estado);
+    List<ReporteFallo> findByIdTecnico(Long Id);
 }

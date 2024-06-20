@@ -1,7 +1,8 @@
 package com.transportelalibertad.TransporteLaLibertarApiRest.Controller;
-
 import com.transportelalibertad.TransporteLaLibertarApiRest.Entity.*;
 import com.transportelalibertad.TransporteLaLibertarApiRest.Service.*;
+import com.transportelalibertad.TransporteLaLibertarApiRest.mail.CorreoRequest;
+import com.transportelalibertad.TransporteLaLibertarApiRest.mail.enviar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -30,10 +32,102 @@ public class AdminController {
     private SucursalService sucursalService;
     @Autowired
     private OrdenTrabajoService ordenTrabajoService;
+    @Autowired
+    private enviar enviarmail;
     @PostMapping("/CrearOrdenTrabajo")
     public ResponseEntity<?> createOrdenTrabajo(@RequestBody OrdenTrabajo ordenTrabajo) {
         try {
             OrdenTrabajo nuevaOrdenTrabajo = ordenTrabajoService.save(ordenTrabajo);
+            List<Usuario> lista = usuarioService.findAll();
+            List<Usuario> usuariosGmail = lista.stream()
+                    .filter(usuario -> usuario.getCorreoElectronico() != null && usuario.getCorreoElectronico().endsWith("@gmail.com"))
+                    .collect(Collectors.toList());
+            System.out.println(usuariosGmail);
+            CorreoRequest correo = new CorreoRequest();
+            correo.setAsunto("Nueva Orden de trabajo");
+
+            for (Usuario usuario :usuariosGmail) {
+                correo.setDestinatario(usuario.getCorreoElectronico());
+                System.out.println(usuario.getCorreoElectronico());
+                String contenido = "<!DOCTYPE html>\n" +
+                        "<html lang=\"es\">\n" +
+                        "<head>\n" +
+                        "    <meta charset=\"UTF-8\">\n" +
+                        "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                        "    <title>Orden de Trabajo</title>\n" +
+                        "    <style>\n" +
+                        "        body {\n" +
+                        "            font-family: Arial, sans-serif;\n" +
+                        "            line-height: 1.6;\n" +
+                        "        }\n" +
+                        "        .container {\n" +
+                        "            max-width: 600px;\n" +
+                        "            margin: 20px auto;\n" +
+                        "            padding: 20px;\n" +
+                        "            border: 1px solid #ccc;\n" +
+                        "            border-radius: 5px;\n" +
+                        "            background-color: #f9f9f9;\n" +
+                        "        }\n" +
+                        "        h1 {\n" +
+                        "            color: #333;\n" +
+                        "            text-align: center;\n" +
+                        "        }\n" +
+                        "        p {\n" +
+                        "            color: #666;\n" +
+                        "        }\n" +
+                        "        .details {\n" +
+                        "            margin-top: 20px;\n" +
+                        "        }\n" +
+                        "        .details table {\n" +
+                        "            width: 100%;\n" +
+                        "            border-collapse: collapse;\n" +
+                        "            margin-top: 10px;\n" +
+                        "        }\n" +
+                        "        .details th, .details td {\n" +
+                        "            border: 1px solid #ccc;\n" +
+                        "            padding: 8px;\n" +
+                        "            text-align: left;\n" +
+                        "        }\n" +
+                        "        .details th {\n" +
+                        "            background-color: #f2f2f2;\n" +
+                        "        }\n" +
+                        "    </style>\n" +
+                        "</head>\n" +
+                        "<body>\n" +
+                        "    <div class=\"container\">\n" +
+                        "        <h1>++</h1>\n" +
+                        "        <p>Estimado/a " + usuario.getNombre() + " " + usuario.getApellido() + "</p>\n" +
+                        "        <p>Le informamos que se ha generado la siguiente orden de trabajo:</p>\n" +
+                        "        <div class=\"details\">\n" +
+                        "            <table>\n" +
+                        "                <tr>\n" +
+                        "                    <th>Número de Orden:</th>\n" +
+                        "                    <td>" + nuevaOrdenTrabajo.getId() + "</td>\n" +
+                        "                </tr>\n" +
+                        "                <tr>\n" +
+                        "                    <th>Fecha de Creación:</th>\n" +
+                        "                    <td>" + nuevaOrdenTrabajo.getFechaCreacion() + "</td>\n" +
+                        "                </tr>\n" +
+                        "                <tr>\n" +
+                        "                    <th>Descripción:</th>\n" +
+                        "                    <td>" + nuevaOrdenTrabajo.getDescripcion() + "</td>\n" +
+                        "                </tr>\n" +
+                        "                <tr>\n" +
+                        "                    <th>Prioridad:</th>\n" +
+                        "                    <td>" + nuevaOrdenTrabajo.getEstado() + "</td>\n" +
+                        "                </tr>\n" +
+                        "            </table>\n" +
+                        "        </div>\n" +
+                        "        <p>Por favor, no dude en contactarnos si tiene alguna pregunta o necesita más información.</p>\n" +
+                        "        <p>Saludos cordiales,</p>\n" +
+                        "    </div>\n" +
+                        "</body>\n" +
+                        "</html>";
+                correo.setContenido(contenido);
+
+                enviarmail.enviarmail(correo);
+            }
+
             return new ResponseEntity<>(nuevaOrdenTrabajo, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>("Error al crear la orden de trabajo: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
