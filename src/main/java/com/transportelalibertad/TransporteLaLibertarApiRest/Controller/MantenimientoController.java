@@ -23,11 +23,14 @@ public class MantenimientoController {
     private UsuarioService usuarioService;
     @Autowired
     private SolicitudRepuestoService solicitudRepuestoService;
-
+    @Autowired
+    private ProductoService productoService;
     @Autowired
     private ReporteFalloService reporteFalloService;
     @Autowired
     private OrdenTrabajoService ordenTrabajoService;
+    @Autowired
+    private AlmacenService almacenService;
     @GetMapping("/OrdenTrabajogetAll")
     public ResponseEntity<?> getAllOrdenTrabajo() {
         try {
@@ -36,6 +39,12 @@ public class MantenimientoController {
             return new ResponseEntity<>("Error al obtener las ordenes de trabajo: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    //solicitud
+
+
+    //solicitud
+
+
     @GetMapping("/OrdenTrabajo/{id}")
     public ResponseEntity<?> getOrdenTrabajoById(@PathVariable Long id) {
         try {
@@ -101,11 +110,48 @@ public class MantenimientoController {
 
 
     // Gestión de solicitudes de repuestos
+    @GetMapping("/productos-almacen/{id}")
+    public ResponseEntity<?> getProductosByIdAlmacen(@PathVariable Long id) {
+        Optional<Almacen> almacenOptional=almacenService.findById(id);
+        if(almacenOptional.isPresent()){
+            return new ResponseEntity<>(almacenOptional.get().getProductos(),HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("Id de ALmacen incorrecto",HttpStatus.NOT_FOUND);
+        }
+    }
+    @GetMapping("/listarProductosBySolicitud/{id}")
+    public ResponseEntity<?> getAllProductosBySolicitud(@PathVariable Long id) {
+        Optional<SolicitudRepuesto> solicitudRepuestoOptional=solicitudRepuestoService.findById(id);
+        if(solicitudRepuestoOptional.isPresent()){
+            return new ResponseEntity<>(solicitudRepuestoOptional.get().getProductos(),HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("Id de solicitud incorrecto",HttpStatus.NOT_FOUND);
+        }
+    }
 
     @PostMapping("/solicitudes-repuestos")
     public ResponseEntity<SolicitudRepuesto> createSolicitudRepuesto(@RequestBody SolicitudRepuesto solicitudRepuesto) {
-        SolicitudRepuesto newSolicitud = solicitudRepuestoService.save(solicitudRepuesto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newSolicitud);
+        try {
+            SolicitudRepuesto nuevaSolicitudRepuesto = solicitudRepuestoService.save(solicitudRepuesto);
+            return new ResponseEntity<>(nuevaSolicitudRepuesto, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PostMapping("/agregarProducto/{solicitudId}/productos/{productoId}")
+    public ResponseEntity<?> addProductoToSolicitud(@PathVariable Long solicitudId, @PathVariable Long productoId) {
+        Optional<SolicitudRepuesto> solicitudOpt = solicitudRepuestoService.findById(solicitudId);
+        Optional<Producto> productoOpt = productoService.findById(productoId);
+
+        if (solicitudOpt.isPresent() && productoOpt.isPresent()) {
+            SolicitudRepuesto solicitud = solicitudOpt.get();
+            Producto producto = productoOpt.get();
+            solicitud.getProductos().add(producto);
+            solicitudRepuestoService.save(solicitud);
+            return new ResponseEntity<>(solicitud.getProductos(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Error al agregar el producto a la solicitud.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/solicitudes-repuestos")

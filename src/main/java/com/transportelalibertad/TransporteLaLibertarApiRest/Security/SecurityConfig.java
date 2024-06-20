@@ -33,7 +33,6 @@ public class SecurityConfig {
                 .authorizeRequests(authorize -> authorize
                         .requestMatchers(
                                 "/api/v1/authenticate", "/api/v1/register"
-                                ,"/api/v1/ordenTrabajo/**"
 
                         ).permitAll()
                         .requestMatchers("/api/v1/admin/**","/api/v1/ordenTrabajo/**").hasRole("ADMINISTRADOR")

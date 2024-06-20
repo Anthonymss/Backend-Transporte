@@ -25,6 +25,7 @@ INSERT INTO usuario_roles (usuario_id, rol_id) VALUES (3, 1);
 INSERT INTO usuario_roles (usuario_id, rol_id) VALUES (2, 2);
 INSERT INTO usuario_roles (usuario_id, rol_id) VALUES (3, 3);
 
+
 INSERT INTO conductor (id, nombre, apellido, licencia) VALUES (1, 'Pedro', 'Ramirez', 'L123456');
 INSERT INTO conductor (id, nombre, apellido, licencia) VALUES (2, 'Ana', 'Martinez', 'L654321');
 INSERT INTO conductor (id, nombre, apellido, licencia) VALUES (3, 'Luis', 'Garcia', 'L987654');
@@ -58,11 +59,11 @@ INSERT INTO orden_trabajo (id, descripcion, fecha_creacion, fecha_fin, estado, v
 
 
 INSERT INTO tarea (id, descripcion, fecha_inicio, fecha_fin, estado, tecnico_id, orden_trabajo_id) VALUES(1, 'Cambio de aceite', '2023-05-01 10:30:00', NULL, 'Pendiente', 1, 1);
-INSERT INTO tarea (id, descripcion, fecha_inicio, fecha_fin, estado, tecnico_id, orden_trabajo_id) VALUES(2, 'Revisión de filtro de aire', '2023-05-01 11:00:00', NULL, 'Pendiente', 1, 1);
+INSERT INTO tarea (id, descripcion, fecha_inicio, fecha_fin, estado, tecnico_id, orden_trabajo_id) VALUES(2, 'Revisión de filtro de aire', '2023-05-01 11:00:00', NULL, 'Pendiente', null, 1);
 INSERT INTO tarea (id, descripcion, fecha_inicio, fecha_fin, estado, tecnico_id, orden_trabajo_id) VALUES(3, 'Reparación de discos de freno', '2023-06-01 11:30:00', NULL, 'Pendiente', 2, 2);
-INSERT INTO tarea (id, descripcion, fecha_inicio, fecha_fin, estado, tecnico_id, orden_trabajo_id) VALUES(4, 'Cambio de pastillas de freno', '2023-06-01 12:00:00', NULL, 'Pendiente', 2, 2);
+INSERT INTO tarea (id, descripcion, fecha_inicio, fecha_fin, estado, tecnico_id, orden_trabajo_id) VALUES(4, 'Cambio de pastillas de freno', '2023-06-01 12:00:00', NULL, 'Pendiente', null, 2);
 INSERT INTO tarea (id, descripcion, fecha_inicio, fecha_fin, estado, tecnico_id, orden_trabajo_id) VALUES(5, 'Limpieza de inyectores', '2023-07-01 12:30:00', NULL, 'En Progreso', 3, 3);
-INSERT INTO tarea (id, descripcion, fecha_inicio, fecha_fin, estado, tecnico_id, orden_trabajo_id) VALUES(6, 'Ajuste de válvulas', '2023-07-01 13:00:00', NULL, 'Pendiente', 3, 3);
+INSERT INTO tarea (id, descripcion, fecha_inicio, fecha_fin, estado, tecnico_id, orden_trabajo_id) VALUES(6, 'Ajuste de válvulas', '2023-07-01 13:00:00', NULL, 'Pendiente', null, 3);
 
 
 INSERT INTO usuario_orden_trabajo (id, orden_trabajo_id, usuario_id) VALUES(1, 1, 1);
