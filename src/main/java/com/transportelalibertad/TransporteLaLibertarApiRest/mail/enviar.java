@@ -25,6 +25,7 @@ public class enviar {
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
+
             helper.setTo(correoRequest.getDestinatario());
             helper.setFrom("liTraFast@outlook.com.pe");
             helper.setSubject(correoRequest.getAsunto());

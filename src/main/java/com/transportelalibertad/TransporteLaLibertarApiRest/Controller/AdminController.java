@@ -120,6 +120,7 @@ public class AdminController {
                         "        </div>\n" +
                         "        <p>Por favor, no dude en contactarnos si tiene alguna pregunta o necesita más información.</p>\n" +
                         "        <p>Saludos cordiales,</p>\n" +
+                        "        <p>by Anthony</p>\n" +
                         "    </div>\n" +
                         "</body>\n" +
                         "</html>";
